@@ -16,6 +16,8 @@ option::option()
     name = "";
     optionMovement;
     optionState = false;
+
+    optionJeffID = 0;
 }
 
 
@@ -24,12 +26,24 @@ option::option()
 
 //"SETTER" METHODS HERE
 
+
+
+void option::setJeffID(int jeff)
+{
+    optionJeffID = jeff;
+}
+
+
 void option::setOption(int dLine, const char * dName)
 {
     dataType = tString;
     line = dLine;
     name = dName;
 }
+
+
+
+
 
 void option::setOption(int dLine, movement dOptionMove)
 {
@@ -45,6 +59,8 @@ void option::setOption(option dOption)
     name = dOption.getName();
     optionMovement = dOption.getMovement();
     optionState = dOption.getState();
+
+    optionJeffID = dOption.getJeffID();
 }
 
 void option::setState(bool dState)
@@ -64,6 +80,11 @@ void option::setState(bool dState)
 
 
 //"GETTER" METHODS HERE
+
+int option::getJeffID()
+{
+    return optionJeffID;
+}
 
 TypeEnum option::getDataType()
 {
@@ -148,6 +169,8 @@ Menu::Menu()
 {
     selectionSize = 0;
     selection;
+
+    subOpMenu = false;
 }
 
 
@@ -165,6 +188,34 @@ void Menu::addOption(const char *dLine)
 
     //add the new option
     tempSelection[selectionSize].setOption( (selectionSize+1), dLine);
+    selectionSize += 1;
+
+
+    //resize selection
+    selection = new option[selectionSize];
+
+    //copy the data back into selection
+    for (int i = 0; i < selectionSize; i++)
+    {
+        selection[i].setOption(tempSelection[i]);
+    }
+}
+
+void Menu::addOption(const char *dLine, int jeff)
+{
+    //a temporary holder of the data
+    option tempSelection[selectionSize + 1];
+
+
+    for (int i = 0; i < selectionSize; i++)
+    {
+        tempSelection[i].setOption(selection[i]);
+    }
+
+    //add the new option
+    //HEEEEEEEEEEEEELLLLLLLLLLLLOOOOOOOOOOOOOO, JEFFID GOES HERE
+    tempSelection[selectionSize].setOption( (selectionSize+1), dLine);
+    tempSelection[selectionSize].setJeffID(jeff);
     selectionSize += 1;
 
 
@@ -203,6 +254,14 @@ void Menu::addOption(movement dMovement)
         selection[i].setOption(tempSelection[i]);
     }
 }
+
+
+void Menu::setSubOpMenu(bool isSubOpMenu)
+{
+    subOpMenu = isSubOpMenu;
+}
+
+
 
 
 
@@ -313,6 +372,16 @@ int Menu::UserInterface()
     }
 
     LCD.SetFontColor( FEHLCD::White );
+
+
+    if (this->subOpMenu == true)
+    {
+        //current is position in array
+        current = this->selection[current].getJeffID();
+    }
+
+
+
     return current;
 }
 

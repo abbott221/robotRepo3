@@ -11,3 +11,9 @@ controller/2_MovementTracker.cpp
 controller/controller.h
 controller/3_Menu.cpp
 controller/1_OperationTracker.cpp
+menuSetup.h
+menuSetup1.cpp
+menuSetup2.cpp
+other.cpp
+other.h
+drive/3_driveLine.cpp
